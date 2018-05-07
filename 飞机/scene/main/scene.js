@@ -126,7 +126,9 @@ class Scene extends GuaScene {
         this.addEnemies()
         this.addElement(this.player)
         this.addElement(this.cloud)
-        //
+        //添加粒子效果
+        var ps = GuaParticleSystem.new(this.game)
+        this.addElement(ps)
 
     }
     addEnemies(){
