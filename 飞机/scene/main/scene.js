@@ -1,13 +1,14 @@
 const config = {
-    player_speed: 10,
+    player_speed: 20,
     cloud_speed: 1,
     enemy_speed: 1,
-    bullet_speed: 5,
+    bullet_speed: 20,
     fire_cooldown: 5
 }
 class Bullet extends GuaImage {
     constructor(game) {
         super(game,'bullet')
+        this.game = game
         this.setup()
     }
     setup(){
@@ -15,8 +16,26 @@ class Bullet extends GuaImage {
         this.speed = config.bullet_speed
     }
     update(){
-
+        if (this.y > 0){
+            this.kill()
+        }
         this.y -= this.speed
+    }
+    kill(){
+        // log('调用了吗')
+        for(let i = 0; i < elements.length; i++){
+            // log('进入了循环',this.x,this.y)
+            let e = elements[i]
+            if (e.alive && rectIntersects(e,this)){
+            // if (e.alive || rectIntersects(e,this)){ 迷之全屏秒杀，很灵性
+                log('发生了碰撞')
+                e.alive = false
+                var ps = GuaParticleSystem.new(this.game)
+                ps.x = e.x
+                ps.y = e.y
+                this.scene.addElement(ps)
+            }
+        }
     }
 }
 class Player extends GuaImage{
@@ -79,11 +98,20 @@ class Enemy extends GuaImage{
         this.speed = randomBetween(2,5)
         this.x = randomBetween(0,350)
         this.y = -randomBetween(0,200)
+        this.alive = true
     }
     update(){
         this.y += this.speed
         if (this.y > 600) {
             this.setup()
+        }
+    }
+    kill(){
+        this.alive = false
+    }
+    draw(){
+        if (this.alive){
+            super.draw()
         }
     }
 }
@@ -114,7 +142,7 @@ class Scene extends GuaScene {
     }
     setup(){
         var game = this.game
-        this.numberOfEnemies = 10
+        this.numberOfEnemies = 5
         this.bg = GuaImage.new(game,'sky')
 
         this.cloud = Cloud.new(game,'cloud')
@@ -127,8 +155,8 @@ class Scene extends GuaScene {
         this.addElement(this.player)
         this.addElement(this.cloud)
         //添加粒子效果
-        var ps = GuaParticleSystem.new(this.game)
-        this.addElement(ps)
+        // var ps = GuaParticleSystem.new(this.game)
+        // this.addElement(ps)
 
     }
     addEnemies(){
@@ -141,6 +169,7 @@ class Scene extends GuaScene {
         this.enemies = es
     }
     update(){
+        // log('scence element is ',this.elements)
         super.update()
         this.cloud.y += 1
 
@@ -162,6 +191,8 @@ class Scene extends GuaScene {
         })
         g.registerAction('f', function(){
             s.player.fire()
+            log('this element is',this.elements)
+            // this.elements.pop(0)
         })
     }
     // draw() {

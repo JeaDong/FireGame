@@ -3,6 +3,7 @@ class GuaScene {
         this.game = game
         this.debugModeEnable = true
         this.elements = []
+        window.elements = this.elements
     }
     static new(game) {
         var i = new this(game)
