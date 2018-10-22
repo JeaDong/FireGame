@@ -54,6 +54,15 @@ class enemyBullet extends GuaImage {
         //     this.kill()
         // }
         this.y += this.speed
+        if (rectIntersects(window.player, this)){
+            log('shot it !')
+            window.player.fire()
+            var e = window.player
+            let ps = GuaParticleSystem.new(this.game)
+            ps.x = e.x
+            ps.y = e.y
+            this.scene.addElement(ps)
+        }
     }
     kill(){
         // log('调用了吗')
@@ -156,7 +165,7 @@ class Enemy extends GuaImage{
     }
     fire(){
         if (this.alive && this.cooldown == 0) {
-            this.cooldown = config.fire_cooldown
+            this.cooldown = 30
             var x = this.x + this.w/2
             var y = this.y
             var b = enemyBullet.new(this.game)
@@ -198,6 +207,7 @@ class Scene extends GuaScene {
 
         this.cloud = Cloud.new(game,'cloud')
         this.player =Player.new(game)
+        window.player = this.player // convert to global var
         this.player.x = 100
         this.player.y = 150
 
