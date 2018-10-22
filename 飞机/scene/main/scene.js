@@ -28,9 +28,9 @@ class Bullet extends GuaImage {
             let e = elements[i]
             if (e.alive && rectIntersects(e,this)){
             // if (e.alive || rectIntersects(e,this)){ 迷之全屏秒杀，很灵性
-                log('发生了碰撞')
+                // log('发生了碰撞')
                 e.alive = false
-                var ps = GuaParticleSystem.new(this.game)
+                let ps = GuaParticleSystem.new(this.game)
                 ps.x = e.x
                 ps.y = e.y
                 this.scene.addElement(ps)
@@ -38,6 +38,41 @@ class Bullet extends GuaImage {
         }
     }
 }
+
+class enemyBullet extends GuaImage {
+    constructor(game) {
+        super(game,'bullet')
+        this.game = game
+        this.setup()
+    }
+    setup(){
+        this.speed = 10
+        // this.speed = config.bullet_speed
+    }
+    update(){
+        // if (this.y > 0){
+        //     this.kill()
+        // }
+        this.y += this.speed
+    }
+    kill(){
+        // log('调用了吗')
+        for(let i = 0; i < elements.length; i++){
+            // log('进入了循环',this.x,this.y)
+            let e = elements[i]
+            if (e.alive && rectIntersects(e,this)){
+            // if (e.alive || rectIntersects(e,this)){ 迷之全屏秒杀，很灵性
+                // log('发生了碰撞')
+                e.alive = false
+                let ps = GuaParticleSystem.new(this.game)
+                ps.x = e.x
+                ps.y = e.y
+                this.scene.addElement(ps)
+            }
+        }
+    }
+}
+
 class Player extends GuaImage{
     constructor(game) {
         super(game,'player')
@@ -98,6 +133,7 @@ class Enemy extends GuaImage{
         this.speed = randomBetween(2,5)
         this.x = randomBetween(0,350)
         this.y = -randomBetween(0,200)
+        this.cooldown = 0
         this.alive = true
     }
     update(){
@@ -105,6 +141,10 @@ class Enemy extends GuaImage{
         if (this.y > 600) {
             this.setup()
         }
+        if (this.cooldown > 0) {
+            this.cooldown--
+        }
+        this.fire()
     }
     kill(){
         this.alive = false
@@ -112,6 +152,17 @@ class Enemy extends GuaImage{
     draw(){
         if (this.alive){
             super.draw()
+        }
+    }
+    fire(){
+        if (this.alive && this.cooldown == 0) {
+            this.cooldown = config.fire_cooldown
+            var x = this.x + this.w/2
+            var y = this.y
+            var b = enemyBullet.new(this.game)
+            b.x = x
+            b.y = y
+            this.scene.addElement(b)
         }
     }
 }
@@ -171,6 +222,8 @@ class Scene extends GuaScene {
     update(){
         // log('scence element is ',this.elements)
         super.update()
+        // 自动发射子弹
+        // this.player.fire()
         this.cloud.y += 1
 
     }
