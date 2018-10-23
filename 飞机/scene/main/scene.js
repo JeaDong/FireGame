@@ -31,8 +31,8 @@ class Bullet extends GuaImage {
                 // log('发生了碰撞')
                 e.alive = false
                 let ps = GuaParticleSystem.new(this.game)
-                ps.x = e.x
-                ps.y = e.y
+                ps.x = e.x + e.w/2
+                ps.y = e.y + e.h/2
                 this.scene.addElement(ps)
             }
         }
@@ -56,7 +56,7 @@ class enemyBullet extends GuaImage {
         this.y += this.speed
         if (rectIntersects(window.player, this)){
             log('shot it !')
-            window.player.fire()
+            // window.player.fire()
             var e = window.player
             let ps = GuaParticleSystem.new(this.game)
             ps.x = e.x
@@ -74,8 +74,8 @@ class enemyBullet extends GuaImage {
                 // log('发生了碰撞')
                 e.alive = false
                 let ps = GuaParticleSystem.new(this.game)
-                ps.x = e.x
-                ps.y = e.y
+                ps.x = e.x + e.w/2
+                ps.y = e.y + e.h/2
                 this.scene.addElement(ps)
             }
         }
@@ -153,7 +153,20 @@ class Enemy extends GuaImage{
         if (this.cooldown > 0) {
             this.cooldown--
         }
-        this.fire()
+        // this.fire()
+        // 敌机碰撞
+        if (this.alive) {
+            
+            if (rectIntersects(this, window.player)){
+                log('shot it !')
+                // window.player.fire()
+                var e = window.player
+                let ps = GuaParticleSystem.new(this.game)
+                ps.x = e.x + e.w/2
+                ps.y = e.y + e.h/2
+                this.scene.addElement(ps)
+        }
+        }
     }
     kill(){
         this.alive = false

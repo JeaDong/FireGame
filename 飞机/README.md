@@ -21,3 +21,5 @@ JavaScript 写游戏
         2.考虑将循环拆开
         3.考虑将player转换成全局变量
 5.敌方可以对player产生碰撞
+
+6.可以考虑给player添加攻击动作的效果，这个是在flipbird中学到的内容
