@@ -15,7 +15,10 @@ class GuaScene {
     }
     draw() {
         for (var e of this.elements) {
-            e.draw()
+            // 考虑在这里添加一个属性判断是不是要draw
+            if (e.canDraw != false) {
+                e.draw()
+            }
         }
     }
     update() {
@@ -25,6 +28,7 @@ class GuaScene {
                 e.debug && e.debug()
             }
         }
+        // this.elements = this.elements.filter(e => e.canDraw == true)
         for (var i = 0; i < this.elements.length; i++) {
             var e = this.elements[i]
             e.update()
