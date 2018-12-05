@@ -10,6 +10,7 @@ class enemyBullet extends GuaImage {
     }
     update(){
         this.fire()
+        this.die()
     }
     
     fire() {
@@ -17,7 +18,14 @@ class enemyBullet extends GuaImage {
         var canAttack = this.canDraw && rectIntersects(window.player, this) && window.player.alive
         if (canAttack){
             this.canDraw = false
-            window.player.hp--
+            if (!this.scene.nut.show) {
+                window.player.hp--
+            }
+        }
+    }
+    die(){
+        if (this.y >= 600) {
+            this.canDraw = false
         }
     }
 }

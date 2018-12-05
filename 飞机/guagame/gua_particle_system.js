@@ -25,6 +25,7 @@ class GuaParticleSystem {
     constructor(game,object) {
         this.game = game
         this.object = object
+        this.canDraw = true
         this.setup()
     }
     static new(game,object) {
@@ -64,7 +65,7 @@ class GuaParticleSystem {
     }
     setup(){
         var e = this.object
-        this.duration = 50
+        this.duration = 20
         this.x = e.x + e.w/2
         this.y = e.y + e.h/2
         this.numberOfParticles = 5

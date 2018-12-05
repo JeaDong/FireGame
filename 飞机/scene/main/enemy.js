@@ -10,7 +10,7 @@ class Enemy extends GuaImage{
         this.speed = randomBetween(2,5)
         this.x = randomBetween(0,350)
         this.y = -randomBetween(0,200)
-        this.cooldown = config.fire_cooldown
+        this.cooldown = 20
         this.alive = true
         this.canDraw = true
     }
@@ -64,6 +64,10 @@ class Enemy extends GuaImage{
             this.canDraw = false
             let ps = GuaParticleSystem.new(this.game, e)
             this.scene.addElement(ps)
+            if (Math.random(0,10) >= 0.55) {
+                let b = Buff.new(this.game, e)
+                this.scene.addElement(b)
+            }
             this.setup()
         }
     }

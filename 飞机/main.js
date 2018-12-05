@@ -36,6 +36,8 @@ var __main = function() {
         enemy3: 'img/enemy0.png',
         enemy4: 'img/enemy1.png',
         fire: 'img/fire.png',
+        add_hp: 'img/add_hp.png',
+        nut: 'img/nut.png',
     }
     var game = GuaGame.instance(30, images, function(g){
          var s = Scene.new(g)

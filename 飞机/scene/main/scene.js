@@ -10,18 +10,41 @@ class Scene extends GuaScene {
         this.setupPlayer()
         this.setupEnemies()
         this.setupScore()
+        // 护盾效果
+        this.nut = Nut.new(this.game)
+        this.addElement(this.nut)
+        
+        // for (var i = 0; i < 30; i++) {
+        //   var g = GuaImage.new(this.game,'ground')
+        //   g.x = i * 19
+        //   g.y = 450
+        //   this.addElement(g)
+        //   this.grounds.push(g)
+        // }
     }
     setupScore(){
+        this.hpNum = GuaLabel.new(this.game, '生命值')
         this.score = GuaLabel.new(this.game, '分数:')
-        this.score.x = 200
-        this.score.y = 400
+        this.hpNum.x = 0
+        this.hpNum.y = 590
+        this.score.x = 300
+        this.score.y = 590
+        this.hpNum.game.context.fillStyle = 'orange'
+        this.hpNum.game.context.font = '30px serif'
+        this.addElement(this.hpNum)
         this.score.game.context.fillStyle = 'orange'
         this.score.game.context.font = '30px serif'
+        this.addElement(this.hpNum)
         this.addElement(this.score)
     }
     setupBG(){
-        this.bg = GuaImage.new(this.game,'sky')
-        this.addElement(this.bg)
+        this.BGs = []
+        for (var i = 0; i < 3; i++) {
+            var bg = GuaImage.new(this.game,'sky')
+            bg.y = - i * bg.h
+            this.addElement(bg)
+            this.BGs.push(bg)
+        }
     }
     setupCloud(){
         this.cloud = Cloud.new(this.game,'cloud')
@@ -50,8 +73,18 @@ class Scene extends GuaScene {
         super.update()
         // 自动发射子弹
         // this.player.fire()
-        this.cloud.y += 1
-        this.score.text = '生命值:' + window.player.hp
+        // this.bg.y += 1
+        this.hpNum.text = '生命值:' + window.player.hp
+        this.score.text = '分数:' + window.player.score
+        for (var i = 0; i < 3; i++) {
+            var g = this.BGs[i]
+            if (g.y >= g.h) {
+                g.y -= g.h * 3 - 20
+            }
+            else{
+                g.y += 20
+            }
+          }
 
     }
     setupInputs(){

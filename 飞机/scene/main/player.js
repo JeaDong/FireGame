@@ -5,9 +5,11 @@ class Player extends GuaImage{
     }
     setup(){
         this.alive = true
+        this.buff = false
         this.speed = config.player_speed
         this.cooldown = 0
         this.hp = config.player_hp
+        this.score = 0
     }
     update(){
         // log('speed is', this.speed, config.player_speed)
@@ -29,6 +31,13 @@ class Player extends GuaImage{
             var b = Bullet.new(this.game)
             b.x = x
             b.y = y
+            if (this.hp <= 10) {
+                this.scene.nut.show = true
+                var b2 = Bullet.new(this.game)
+                b2.x = this.x + this.w / 2 / 2
+                b2.y = y
+                this.scene.addElement(b2)
+            }
             this.scene.addElement(b)
         }
     }

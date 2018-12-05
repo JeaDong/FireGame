@@ -9,6 +9,7 @@ class Bullet extends GuaImage {
     }
     update(){
         this.fire()
+        this.die()
     }
     fire(){
         for(let i = 0; i < elements.length; i++){
@@ -16,10 +17,16 @@ class Bullet extends GuaImage {
             let e = elements[i]
             var canAttack = this.canDraw && e.alive && rectIntersects(e,this)
             if (canAttack){
+                window.player.score += 100
                 e.alive = false
                 this.canDraw = false
             }
         }
         this.y -= this.speed
+    }
+    die(){
+        if (this.y <= 0) {
+            this.canDraw = false
+        }
     }
 }

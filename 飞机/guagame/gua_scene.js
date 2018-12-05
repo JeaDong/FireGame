@@ -28,7 +28,7 @@ class GuaScene {
                 e.debug && e.debug()
             }
         }
-        // this.elements = this.elements.filter(e => e.canDraw == true)
+        this.elements = this.elements.filter(e => e.canDraw == true)
         for (var i = 0; i < this.elements.length; i++) {
             var e = this.elements[i]
             e.update()

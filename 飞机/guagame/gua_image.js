@@ -12,6 +12,7 @@ class GuaImage {
         var i = new this(game,name)
         return i
     }
+    
     draw() {
         this.game.drawImage(this)
     }
